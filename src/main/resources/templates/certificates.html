@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+<div th:replace="~{fragments/template :: header}"></div>
+<div class="container center-align">
+    <p>Ваши сертификаты <a class="waves-effect waves-light btn mt-1" th:href="@{/certificate/add}">Подарить новый сертификат</a></p>
+    <div class="profile-row" style="display: flex; justify-content: space-around; width: 100%; align-items: baseline">
+        <ul class="collection with-header home-info">
+            <li class="collection-header home-info-item-header"><h3 class="home-info-value">Мне</h3></li>
+            <li th:each="cert : ${received}" class="collection-item home-info-item column-cert">
+
+                    <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getFromUser().getFirstName() + ' ' + cert.getFromUser().getLastName()}"></div>
+                    <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getDateCreate()}"></div>
+                    <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getPrice()}"></p><span>р.</span></div>
+            </li>
+            <li class="collection-item home-info-item" th:if="${received.size() == 0}">Список пуст</li>
+        </ul>
+        <ul class="collection with-header home-info">
+            <li class="collection-header home-info-item-header"><h3 class="home-info-value">От меня</h3></li>
+            <li th:each="cert : ${donated}" class="collection-item home-info-item column-cert">
+                    <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getToUser().getFirstName() + ' ' + cert.getToUser().getLastName()}"></div>
+                <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getDateCreate()}"></div>
+                <div class="column-cert-item"><p class="home-info-value" th:text="${cert.getPrice()}"></p><span>р.</span></div>
+
+            </li>
+            <li class="collection-item home-info-item" th:if="${donated.size() == 0}">Список пуст</li>
+        </ul>
+    </div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

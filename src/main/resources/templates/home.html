@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+    <div th:replace="~{fragments/template :: header}"></div>
+    <div class="container center-align">
+    <div sec:authorize="isAuthenticated()">
+        <h2 style="width: 100%; text-align: left;font-size: 25px">Информация о пользователе, баланс - <span style="font-size: 18px"><span th:text="${#authentication.getPrincipal().getCash()}"></span> рублей</span></h2>
+        <h4>Ниже кнопки для изменения:</h4>
+        <div class="row mb-2 mt-1">
+            <div class="col l4 s12 p0 mb-1">
+                <a style="width: 100%" class="waves-effect waves-light btn modal-trigger" href="#modal-main">Личных данных</a>
+            </div>
+            <div class="l4 s12 col p0 mb-1">
+                <a style="width: 100%" class="waves-effect waves-light btn modal-trigger" href="#modal-address">Адреса</a>
+            </div>
+            <div class="col l4 s12 p0 mb-1">
+                <a style="width: 100%" class="waves-effect waves-light btn modal-trigger" href="#modal-balance">Баланса</a>
+            </div>
+        </div>
+        <div class="profile-row" style="display: flex; justify-content: space-around; width: 100%; align-items: baseline">
+            <ul class="collection with-header home-info" style="width: 100% !important; border-radius: 0; background: lightsalmon; color: blue">
+                <li class="collection-header home-info-item-header"><h6 class="home-info-value">Основная информация</h6></li>
+                <li class="collection-item home-info-item"><span>Имя -</span><p th:text="${user.getFirstName()}"></p></li>
+                <li class="collection-item home-info-item"><span>Фамилия -</span><p th:text="${user.getLastName()}"></p></li>
+                <li class="collection-item home-info-item"><span>Логин -</span><p  th:text="${user.getUsername()}"></p></li>
+                <li class="collection-item home-info-item"><span>Телефон -</span><p  th:text="${user.getPhone()}"></p></li>
+                <li class="collection-item home-info-item"><span>Почта -</span><p  th:text="${user.getEmail()}"></p></li>
+                <li sec:authorize="!hasAuthority('ADMIN')" class="collection-item home-info-item"><span>Роль -</span><p>Пользователь</p></li>
+                <li sec:authorize="hasAuthority('ADMIN')" class="collection-item home-info-item"><span>Роль -</span><p>Администратор</p></li>
+                <li class="collection-header home-info-item-header"><h6>Место жительства</h6></li>
+                <li class="collection-item home-info-item"><span>Страна -</span><p th:text="${address.getCountry()}"></p></li>
+                <li class="collection-item home-info-item"><span>Город -</span><p  th:text="${address.getCity()}"></p></li>
+                <li class="collection-item home-info-item"><span>Улица -</span><p th:text="${address.getStreet()}"></p></li>
+                <li class="collection-item home-info-item"><span>Дом -</span><p th:text="${address.getHouse()}"></p></li>
+                <li class="collection-item home-info-item"><span>Подъезд -</span><p th:text="${address.getEntrance()}"></p></li>
+                <li class="collection-item home-info-item"><span>Квартира -</span><p  th:text="${address.getFlat()}"></p></li>
+                <li class="collection-item home-info-item"><span>Коммент -</span><p th:text="${address.getCommentary()}"></p></li>
+            </ul>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="modal-balance" class="modal">
+            <form class="col s12 m6" method="post" th:action="@{/profile/cash}" th:object="${user}">
+                <div class="modal-content">
+                    <div class="row mb-1">
+                        <div class="input-field col s12">
+                            <input required id="cash" name="cash" th:value="0" type="number" class="validate">
+                            <label for="cash">Пополнить на</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить</button>
+                </div>
+            </form>
+        </div>
+        <div id="modal-main" class="modal">
+            <form class="col s12" method="post" th:action="@{/profile/main}" th:object="${user}">
+                <div class="modal-content">
+                    <div class="row mb-1">
+                        <div class="input-field col m6 s12">
+                            <input required id="firstName" name="firstName" th:value="${user.getFirstName()}" type="text" class="validate">
+                            <label for="firstName">Имя</label>
+                        </div>
+                        <div class="input-field col m6 s12">
+                            <input required id="lastName" name="lastName" type="text" th:value="${user.getLastName}" class="validate">
+                            <label for="lastName">Фамилия</label>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="input-field col m6 s12">
+                            <input required id="email" name="email" th:value="${user.getEmail}" type="email" class="validate">
+                            <label for="email">Почта</label>
+                        </div>
+                        <div class="input-field col m6 s12">
+                            <input required id="phone" name="phone" th:value="${user.getPhone}" type="text" class="validate">
+                            <label for="phone">Телефон</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить</button>
+                </div>
+            </form>
+        </div>
+        <div id="modal-address" class="modal">
+            <form class="col s12" method="post" th:action="@{/profile/address}" th:object="${address}">
+                <div class="modal-content">
+                    <div class="row mb-1">
+                        <div class="input-field col s6">
+                            <input required id="country" name="country" th:value="${address.getCountry()}" type="text" class="validate">
+                            <label for="country">Страна</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input required id="city" name="city" th:value="${address.getCity()}" type="text" class="validate">
+                            <label for="city">Город</label>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="input-field col s8">
+                            <input required id="street" name="street" th:value="${address.getStreet()}" type="text" class="validate">
+                            <label for="street">Улица</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input required id="house"  name="house" th:value="${address.getHouse()}" type="text" class="validate">
+                            <label for="house">Дом</label>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="input-field col s6 m2">
+                            <input required id="entrance" name="entrance" th:value="${address.getEntrance()}" type="text" class="validate">
+                            <label for="entrance">Подъезд</label>
+                        </div>
+                        <div class="input-field col s6 m2">
+                            <input required id="flat" name="flat" th:value="${address.getFlat()}" type="number" class="validate">
+                            <label for="flat">Квартира</label>
+                        </div>
+                        <div class="input-field col m8 s12">
+                            <input id="commentary" name="commentary" th:value="${address.getCommentary()}" type="text" class="validate">
+                            <label for="commentary">Комментарий</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">Войдите в аккаунт</a>
+    </div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

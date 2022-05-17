@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+    <div th:replace="~{fragments/template :: head}"></div>
+    <body>
+    <div class="container">
+        <h1 class="mb-3">ОШИБКА</h1>
+        <h6 class="mb-3">Что-то пошло не так</h6>
+        <div class="row m-x-auto">
+        <div class="col s12 m6 m-x-auto">
+            <div class="red darken-1">
+                <div class="card-content white-text" th:if="${errorTitle}">
+                    <span class="card-title" th:text="${errorTitle}"></span>
+                    <p th:text="${errorMessage}" th:if="${errorMessage}"></p>
+                </div>
+                <div class="card-content white-text" th:unless="${errorTitle}">
+                    <p>Произошла ошибка</p>
+                </div>
+                <div class="card-action">
+                    <a th:href="@{/home}" sec:authorize="isAuthenticated()">На главную</a>
+                    <a th:href="@{/login}" sec:authorize="isAnonymous()">Войти в аккаунт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script th:replace="~{fragments/template :: script}"></script>
+    </body>
+</html>

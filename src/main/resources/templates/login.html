@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+<div class="container">
+<div class="row mb-0 center-align">
+    <p class="flow-text">Войдите или <a th:href="@{/registration}">зарегистрируйтесь</a></p>
+    <form class="col s12" th:action="@{/login}" method="post">
+        <div th:if="${param.error}">
+            <div class="alert alert-danger mb-1">
+                Неправильный логин или пароль
+            </div>
+        </div>
+        <div th:if="${param.afterReg}">
+            <div class="alert alert-info mb-1">
+                Регистрация прошла успешно
+            </div>
+        </div>
+        <div class="row mb-1 mt-1">
+            <div class="input-field col s12">
+                <input required id="username" name="username" type="text" class="validate">
+                <label for="username">Логин</label>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="input-field col s12">
+                <input required id="password" name="password" type="password" class="validate">
+                <label for="password">Пароль</label>
+            </div>
+        </div>
+        <button type="submit" class="waves-effect waves-light btn">Отправить</button>
+    </form>
+</div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

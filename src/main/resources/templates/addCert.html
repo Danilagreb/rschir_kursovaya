@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+<div th:replace="~{fragments/template :: header}"></div>
+<div class="container center-align">
+    <div>Подарите сертификат, осталось денег: <span th:text="${#authentication.getPrincipal().getCash()}"></span></div>
+  <form method="post" class="row mb-1 inline-form" th:action="@{/certificate/add}" th:object="${newUser}">
+        <div class="input-field col s12">
+            <input id="firstName" th:field="*{firstName}" type="text" class="validate">
+            <label for="firstName">Имя</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="lastName" name="lastName" th:field="*{lastName}" type="text" class="validate">
+            <label for="price">Фамилия</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="username" name="username" th:field="*{username}" type="text" class="validate">
+            <label for="username">Логин</label>
+        </div>
+       <div class="cols s12 col">
+           <button class="waves-effect waves-light btn-small" type="submit"><i class="material-icons">search</i></button>
+       </div>
+    </form>
+
+    <div class="row wrap">
+        <div class="col s12" th:each="user : ${users}">
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <p class="card-content-item">Имя - <bold><span th:text="${user.getFirstName()}"></span></bold></p>
+                        <p class="card-content-item">Фамилия - <bold><span th:text="${user.getLastName()}"></span></bold></p>
+                        <p class="card-content-item">Логин - <bold><span th:text="${user.getUsername()}"></span></bold></p>
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn modal-trigger" th:href="'#' + ${user.getId()}">Выбрать</a>
+                    </div>
+                    <div th:id="${user.getId()}" class="modal">
+                        <form class="col s12 m12" method="post" th:action="@{'/certificate/' + ${user.getId()} + '/add'}" th:object="${newCert}">
+                            <div class="modal-content">
+                                <div class="row mb-1">
+                                    <h5>Подарите сертификат на нужную сумму!</h5>
+                                    <div class="input-field col s12 mt-2">
+                                        <input required id="price" name="price" th:value="0" type="number" class="validate">
+                                        <label for="price">На сумму</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer mb-1">
+                                <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

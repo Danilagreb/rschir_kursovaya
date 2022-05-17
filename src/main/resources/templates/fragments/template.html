@@ -1,0 +1,31 @@
+<html xmlns:th="http://thymeleaf.org">
+<head th:fragment="head">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+    <title>Ресторан Miracle</title>
+</head>
+<body>
+<header th:fragment="header">
+    <nav>
+        <div class="nav-wrapper">
+            <a th:href="@{/home}" class="brand-logo right site-logo"><i class="material-icons ml-1">restaurant_menu</i>Ресторан Miracle</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons" style="color: white">menu</i></a>
+        </div>
+    </nav>
+    <ul class="sidenav" id="slide-out">
+        <li><a th:href="@{/home}">На главную</a></li>
+        <li><a th:href="@{/goods}">Список товаров</a></li>
+        <li><a th:href="@{/order/add}">Сделать заказ</a></li>
+        <li><a th:href="@{/certificate}">Сертификаты</a></li>
+        <li><a th:href="@{/logout}">Выйти</a></li>
+    </ul>
+</header>
+<div th:fragment="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/materialize.js}"></script>
+</div>
+</body>
+</html>

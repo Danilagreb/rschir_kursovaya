@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+<div th:replace="~{fragments/template :: header}"></div>
+<div class="container center-align">
+    <h5 class="mb-3">Ваш баланс — <bold th:text="${#authentication.getPrincipal().getCash()}"></bold></h5>
+    <a th:href="@{/order}" >Посмотреть заказы</a>
+    <a th:href="@{/goods}" >Посмотреть список блюд</a>
+    <form method="post" id="filter-order-form" class="row mb-1 inline-form" th:action="@{/order/add}" th:object="${filterDto}">
+        <div class="input-field col s12">
+            <input id="nameFilter" name="name" th:field="*{name}" type="text" class="validate">
+            <label for="nameFilter">Поиск</label>
+        </div>
+        <div class="input-field col s12">
+            <input required id="minPrice" name="minPrice" th:field="*{minPrice}" type="number" class="validate">
+            <label for="minPrice">Мин. цена</label>
+        </div>
+        <div class="input-field col s12">
+            <input required id="maxPrice" name="maxPrice" th:field="*{maxPrice}" type="number" class="validate">
+            <label for="maxPrice">Макс. цена</label>
+        </div>
+        <div class="cols s12">
+            <button class="waves-effect waves-light btn-small" type="submit"><i class="material-icons">search</i></button>
+        </div>
+    </form>
+    <h3 class="col s12 center-x" style="width: 100%" th:if="${goods.size() == 0}">Товары не найдены</h3>
+    <div class="row wrap" style="display: flex; align-items: stretch">
+        <div class="col m6 s12">
+            <div class="row wrap" style="display: flex; align-items: stretch">
+                <div class="col s12" style="margin-left: 0 !important;" th:each="item : ${goods}">
+                    <div class="card horizontal m-0 card-goods">
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <img th:if="${item.getImg() != null && item.getImg() != ''}" class="m-a mb-1" height="200px" width="auto" th:src="${item.getImg()}" />
+                                <div th:if="${item.getImg() == null || item.getImg() == ''}" style="height: 200px; width: 100%" />
+                                <p th:if="${item.getDiscount() == 0}" class="card-content-item">Цена - <bold><span th:text="${item.getPrice()}"></span></bold></p>
+                                <p th:if="${item.getDiscount() != 0}" class="card-content-item">Цена - <s><bold><span th:text="${item.getPrice()}"></span></bold></s></p>
+                                <p th:if="${item.getDiscount() != 0}" class="card-content-item">Цена со скидкой - <bold><span th:text="${item.getCurrentPrice()}"></span></bold></p>
+                                <p class="card-content-item">Тип - <bold><span th:text="${item.getGoodsType()}"></span></bold></p>
+                                <p class="card-content-item">Название - <bold><span th:text="${item.getName()}"></span></bold></p>
+                                <p class="card-content-item">Описание - <bold><span th:text="${item.getDescription()}"></span></bold></p>
+                            </div>
+                            <div class="card-action m-x-auto">
+                                <a th:data-id="${item.getId()}" th:data-price="${item.getCurrentPrice()}" th:data-name="${item.getName()}" class="button-add-order waves-effect waves-light mini-btn btn-small">Добавить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col m6 s12">
+            <form id="create-order-form" class="col s12 m12" method="post" th:action="@{/order}" th:object="${orderDto}">
+                <h5 class="mb-2">Cоздайте заказ!</h5>
+                <div class="row mb-1">
+                    <label class="col s12">
+                        <input id="withDelivery" name="withDelivery" th:checked="*{withDelivery}" type="checkbox" class="filled-in">
+                        <span>С доставкой?</span>
+                    </label>
+                </div>
+                <ul class="collection" id="collection-added-goods">
+                    <li th:each="item,iter : ${checkedGoods}" class="collection-item" th:data-index="${iter.index}" th:data-price="${item.getCurrentPrice()}" th:data-id="${item.getId()}" style="display: flex; flex-direction: column">
+                        <div th:text="${item.getName()}"></div>
+                        <div th:text="'Цена - ' + ${item.getCurrentPrice()}"></div>
+                        <button class="m-x-auto w100 remove-goods waves-effect waves-light mini-btn btn-small">Удалить</button>
+                    </li>
+                </ul>
+                <p id="order-price" class="mt-2">Цена заказа - 0</p>
+                <p id="order-price-delivery" th:attr="style=${orderDto.getWithDelivery() != null ? 'display: block' : 'display: none'}">Цена доставки - <span th:text="${@environment.getProperty('delivery.price')}"></span></p>
+                <input th:each="item,iter : ${checkedGoods}" type="text" th:data-index="${iter.index}" hidden class="validate good-item" name="goodsIds[]" field="goodsIds[]" th:value="${item.getId()}">
+                <button type="submit" class="waves-effect waves-light btn">Создать</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

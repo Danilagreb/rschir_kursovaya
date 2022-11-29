@@ -6,12 +6,12 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @Setter
 public class Certificate {
-    private UUID id;
+    private Integer id;
     private User fromUser;
     private User toUser;
     private String dateCreate;

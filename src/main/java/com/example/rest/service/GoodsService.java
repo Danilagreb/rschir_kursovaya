@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Service
 public class GoodsService {
 
     @Autowired
     private GoodsRepo goodsRepo;
+
 
     public List<GoodsEntity> getAllGoods(FilterGoodsDTO dto) {
         int maxPrice = dto.getMaxPrice() == 0 ? Integer.MAX_VALUE : Math.min(dto.getMaxPrice(), Integer.MAX_VALUE);
@@ -25,9 +26,9 @@ public class GoodsService {
         }
         return goodsRepo.filterByFields(dto.getName(), Math.max(dto.getMinPrice(), 0), maxPrice);
     }
-    public List<GoodsEntity> getAllByIds(List<UUID> ids) {
+    public List<GoodsEntity> getAllByIds(List<Integer> ids) {
         List<GoodsEntity> result = new ArrayList<>();
-        for(UUID id: ids) {
+        for(Integer id: ids) {
             GoodsEntity item = goodsRepo.findById(id).orElseGet(null);
             if(item != null) {
                 result.add(item);
@@ -45,7 +46,7 @@ public class GoodsService {
         return goodsItem;
     }
 
-    public GoodsEntity editDiscount(UUID goodsItemId, int discount) throws Exception {
+    public GoodsEntity editDiscount(Integer goodsItemId, int discount) throws Exception {
         if(discount < 0) {
             discount = 0;
         } else if (discount > 99) {
@@ -58,7 +59,7 @@ public class GoodsService {
         return goodsItemFromDb;
     }
 
-    public GoodsEntity editGoodsInfo(UUID goodsItemId, GoodsEntity goodsItem) throws Exception {
+    public GoodsEntity editGoodsInfo(Integer goodsItemId, GoodsEntity goodsItem) throws Exception {
         GoodsEntity goodsItemFromDb = goodsRepo.findById(goodsItemId).orElseThrow(() -> new Exception("Товар не найден"));
         if(goodsItem.getPrice() <= 0) {
             throw new Exception("Цена должна быть больше нуля");

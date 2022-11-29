@@ -1,5 +1,6 @@
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="head">
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
@@ -17,7 +18,8 @@
     <ul class="sidenav" id="slide-out">
         <li><a th:href="@{/home}">На главную</a></li>
         <li><a th:href="@{/goods}">Список товаров</a></li>
-        <li><a th:href="@{/order/add}">Сделать заказ</a></li>
+        <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/curiers}">Курьеры</a></li>
+        <li><a th:href="@{/order/add}">Страница заказов</a></li>
         <li><a th:href="@{/certificate}">Сертификаты</a></li>
         <li><a th:href="@{/logout}">Выйти</a></li>
     </ul>

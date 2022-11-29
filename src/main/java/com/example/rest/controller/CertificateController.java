@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @Controller
 @RequestMapping("/certificate")
@@ -64,7 +64,7 @@ public class CertificateController {
             RedirectAttributes attrs,
             @AuthenticationPrincipal UserEntity currentUser,
             CertificateEntity certInfo,
-            @PathVariable UUID toUserId
+            @PathVariable Integer toUserId
     ) {
         try {
             certificateService.create(currentUser, toUserId, certInfo);

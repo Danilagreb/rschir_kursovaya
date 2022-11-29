@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+
 
 @Service
 public class CertificateService {
@@ -22,7 +22,7 @@ public class CertificateService {
     @Autowired
     private ProfileService profileService;
 
-    public CertificateEntity create(UserEntity currentUser, UUID toUserID, CertificateEntity certInfo) throws Exception {
+    public CertificateEntity create(UserEntity currentUser, Integer toUserID, CertificateEntity certInfo) throws Exception {
         CertificateEntity certificate = new CertificateEntity();
         UserEntity toUser = userRepo.findById(toUserID).orElseThrow(() -> new Exception("Пользователь не найден"));
         if(currentUser.getCash() < certInfo.getPrice()) {

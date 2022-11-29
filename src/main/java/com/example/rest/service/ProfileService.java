@@ -45,4 +45,7 @@ public class ProfileService {
         newAddress.setUser(currentUser);
         addressRepo.save(newAddress);
     }
+    public void removeAccount(UserEntity currentUser) {
+        userRepo.deleteById(currentUser.getId());
+    }
 }

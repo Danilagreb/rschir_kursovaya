@@ -8,10 +8,10 @@
         <div class="row m-x-auto">
         <div class="col s12 m6 m-x-auto">
             <div class="red darken-1">
-                <div class="card-content white-text" th:if="${errorTitle}">
+<!--                <div class="card-content white-text" th:if="${errorTitle}">-->
                     <span class="card-title" th:text="${errorTitle}"></span>
                     <p th:text="${errorMessage}" th:if="${errorMessage}"></p>
-                </div>
+<!--                </div>-->
                 <div class="card-content white-text" th:unless="${errorTitle}">
                     <p>Произошла ошибка</p>
                 </div>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<div th:replace="~{fragments/template :: head}"></div>
+<body>
+<div th:replace="~{fragments/template :: header}"></div>
+<div class="container center-align">
+    <h3>Список всех курьеров</h3>
+    <div style="display: flex; width: 100%; justify-content: center; column-gap: 12px" class="btns-group mt-1 mb-3">
+        <a sec:authorize="hasAuthority('ADMIN')" href="#create-curier" class="waves-effect waves-light btn-small  modal-trigger">Добавить курьера</a>
+    </div>
+    <div class="row wrap" style="display: flex; align-items: stretch">
+        <h3 class="col s12 center-x" style="width: 100%" th:if="${curiers.size() == 0}">Курьеры не найдены</h3>
+        <div class="col s12 m6 l4" th:each="item : ${curiers}">
+            <div class="card horizontal m-0 card-goods">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <p class="card-content-item">Имя - <bold><span th:text="${item.getName()}"></span></bold></p>
+                        <p class="card-content-item">Телефон - <bold><span th:text="${item.getPhone()}"></span></bold></p>
+                        <p class="card-content-item">Статус - <bold><span th:text="${item.getStatus() == 'free' ? 'Свободен' : 'Занят'}"></span></bold></p>
+                        <p th:if="${item.getStatus() != 'free'}" class="card-content-item">Номер заказа - <bold><span th:text="${T(com.example.rest.Helpers.Utilities).getLastOrder(item)}"></span></bold></p>
+
+                    </div>
+                    <div sec:authorize="hasAuthority('ADMIN')" class="card-action between wrap">
+                        <a class="waves-effect waves-light mini-btn btn-small modal-trigger" th:href="'#' + ${item.getId()} + '_1'">Изменить</a>
+                        <a class="waves-effect waves-light mini-btn btn-small modal-trigger" th:href="'#' + ${item.getId()} + '_2'">Удалить</a>
+                    </div>
+                    <div th:id="${item.getId()} + '_1'" class="modal">
+                        <form class="col s12 m12" method="post" th:action="@{'/curiers/' + ${item.getId()} + '/edit'}" th:object="${newCurierItem}">
+                            <div class="modal-content">
+                                <h5 class="mb-2">Измените!</h5>
+                                <div class="row mb-1">
+                                    <div class="input-field col m12 s12">
+                                        <input required id="nameEdit" name="name"  th:value="${item.getName()}" type="text" class="validate">
+                                        <label for="nameEdit">Имя</label>
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <div class="input-field col m6 s12">
+                                        <input required id="statusEdit" name="status"  th:value="${item.getStatus()}" type="text" class="validate">
+                                        <label for="statusEdit">Статус</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+                                        <input required id="phoneEdit" name="phone"  th:value="${item.getPhone()}" type="text" class="validate">
+                                        <label for="phoneEdit">Телефон</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer mb-1">
+                                <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить<i class="material-icons right">send</i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div th:id="${item.getId()} + '_2'" class="modal">
+                        <form class="col s12" method="post"  th:action="@{'/curiers/' + ${item.getId()} + '/delete'}">
+                            <div class="modal-content">
+                                <h2>Вы уверены?</h2>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="modal-close waves-effect waves-green btn-flat">Да</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="create-curier" class="modal">
+        <form class="col s12 m12" method="post" th:action="@{/curiers/create}" th:object="${newCurierItem}">
+            <div class="modal-content">
+                <h5 class="mb-2">Создайте новый!</h5>
+                <div class="row mb-1">
+                    <div class="input-field col m6 s12">
+                        <input required id="nameCreate" name="name" th:field="*{name}" type="text" class="validate">
+                        <label for="nameCreate">Имя</label>
+                    </div>
+                    <div class="input-field col m6 s12">
+                        <input required id="phoneCreate" name="phone" th:field="*{phone}" type="text" class="validate">
+                        <label for="phoneCreate">Телефон</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer mb-1">
+                <button type="submit" class="modal-close waves-effect waves-green btn-flat">Сохранить<i class="material-icons right">send</i></button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:replace="~{fragments/template :: script}"></script>
+</body>
+</html>

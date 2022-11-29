@@ -22,6 +22,13 @@ h6 {
     height: 100vh !important;
 }
 
+.card-orders {
+    border-radius: 20px !important;
+    background: cornflowerblue !important;
+    border: 10px solid white;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.8), -5px -5px 10px rgba(0,0,0,0.8),-5px 5px 10px rgba(0,0,0,0.8),5px -5px 10px rgba(0,0,0,0.8);
+}
+
 .btn, .btn-small {
     background: orange !important;
     color: white !important;
@@ -194,6 +201,14 @@ input:-webkit-autofill:active {
     color: white;
 }
 
+select {
+    display: inline-block !important;
+}
+
+.select-multiple {
+    height: 130px;
+    overflow-y: auto;
+}
 
 .toast {
     position: fixed;
@@ -383,7 +398,7 @@ input:-webkit-autofill:active {
     flex-direction: column;
 }
 .modal > * {
-    transform: translateY(50%);
+    transform: translateY(10%);
 }
 
 @media (max-width: 900px) {

@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                     "/logout",
                     "/registration",
                     "/error",
+                    "/error-curiers",
                     "/img/**",
                     "/static/**",
                     "/css/**",

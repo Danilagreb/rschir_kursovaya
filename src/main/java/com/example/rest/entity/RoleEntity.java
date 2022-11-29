@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
 
 @Entity
 @Table(name = "roles")
@@ -18,8 +18,8 @@ import java.util.UUID;
 @ToString
 public class RoleEntity implements GrantedAuthority {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     @Transient
     @ManyToMany(mappedBy = "roles")

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @Component
 @RequestMapping("/goods")
@@ -48,7 +48,7 @@ public class GoodsController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{goodsId}/discount")
-    public String editGoodsDiscount(RedirectAttributes attrs, SetDiscountDto dto, @PathVariable UUID goodsId, Model model) {
+    public String editGoodsDiscount(RedirectAttributes attrs, SetDiscountDto dto, @PathVariable Integer goodsId, Model model) {
         try {
             goodsService.editDiscount(goodsId, dto.getDiscount());
             attrs.addFlashAttribute("message", "Изменена скидка");
@@ -62,7 +62,7 @@ public class GoodsController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{goodsId}/edit")
-    public String editGoodsInfo(RedirectAttributes attrs, GoodsEntity goodsItem, @PathVariable UUID goodsId, Model model) {
+    public String editGoodsInfo(RedirectAttributes attrs, GoodsEntity goodsItem, @PathVariable Integer goodsId, Model model) {
         try {
             goodsService.editGoodsInfo(goodsId, goodsItem);
             attrs.addFlashAttribute("message", "Товар изменен");

@@ -23,8 +23,12 @@ public class ProfileController {
     }
     @PostMapping("/cash")
     String updateProfileCash(@AuthenticationPrincipal UserEntity user, UserEntity updatedUser, RedirectAttributes attrs) {
-        profileService.updateCash(user, updatedUser);
-        attrs.addFlashAttribute("message", updatedUser.getCash() > 0 ? "Баланс пополнен" : "Баланс изменился");
+        if(updatedUser.getCash() <= 0) {
+            attrs.addFlashAttribute("message", "Ошибка при пополнении");
+        } else {
+            profileService.updateCash(user, updatedUser);
+            attrs.addFlashAttribute("message", "Баланс пополнен");
+        }
         return "redirect:/home";
     }
     @PostMapping("/address")
@@ -32,5 +36,11 @@ public class ProfileController {
         profileService.updateAddress(user, newAddress);
         attrs.addFlashAttribute("message", "Адрес обновлен");
         return "redirect:/home";
+    }
+    @PostMapping("/delete")
+    String removeAccount(@AuthenticationPrincipal UserEntity user, RedirectAttributes attrs) {
+        profileService.removeAccount(user);
+        attrs.addFlashAttribute("message", "Вы удалили свой аккаунт");
+        return "redirect:/logout";
     }
 }

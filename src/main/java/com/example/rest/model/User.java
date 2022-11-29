@@ -7,13 +7,13 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @Setter
 @ToString
 public class User {
-    private UUID id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String username;
@@ -26,6 +26,15 @@ public class User {
 
     public static User toModel(UserEntity userEntity) {
         User user = new User();
+        if(userEntity == null) {
+            user.setId((int) (Math.random()*1000 + 1));
+            user.setFirstName("");
+            user.setLastName("DELETED");
+            user.setUsername("DELETED");
+            user.setEmail("");
+            user.setPhone("");
+            return user;
+        }
         user.setId(userEntity.getId());
         user.setFirstName(userEntity.getFirstName());
         user.setLastName(userEntity.getLastName());

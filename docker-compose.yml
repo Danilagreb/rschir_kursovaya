@@ -1,0 +1,28 @@
+version: "3"
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=restaurant_project_kursovaya
+    ports:
+      - "3309:3306"
+    volumes:
+      - db:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+  app:
+    depends_on:
+      - mysqldb
+    build:
+      context: .
+    restart: on-failure
+    ports:
+      - "8092:8080"
+    environment:
+      - spring.datasource.url=jdbc:mysql://localhost:3306/restaurant_project_kursovaya?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+      - spring.datasource.user=root
+      - spring.datasource.password=password
+
+volumes:
+  db:

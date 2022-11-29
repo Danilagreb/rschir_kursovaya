@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 public class CreateOrderDTO {
-    private List<UUID> goodsIds = new ArrayList<>();
+    private List<Integer> goodsIds = new ArrayList<>();
     private String withDelivery = null;
 
 }

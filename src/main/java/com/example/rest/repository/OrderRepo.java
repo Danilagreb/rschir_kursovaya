@@ -6,16 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @Repository
-public interface OrderRepo extends JpaRepository<OrderEntity, UUID> {
-    public List<OrderEntity> findAllByUser_IdOrderByTimestampDesc(UUID userId);
-    default List<OrderEntity> getAllOrders(UUID userId) {
+public interface OrderRepo extends JpaRepository<OrderEntity, Integer> {
+    public List<OrderEntity> findAllByUser_IdOrderByTimestampDesc(Integer userId);
+    default List<OrderEntity> getAllOrders(Integer userId) {
         return findAllByUser_IdOrderByTimestampDesc(userId);
     }
 
 
     @Query("SELECT SUM(m.price) FROM OrderEntity m where m.user.id = ?1")
-    public Long selectTotalCost(UUID userId);
+    public Long selectTotalCost(Integer userId);
+    @Query("SELECT SUM(m.price) FROM OrderEntity m")
+    public Long selectTotalCostAllUsers();
 }

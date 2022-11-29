@@ -21,8 +21,8 @@ import java.util.*;
 @AllArgsConstructor
 public class UserEntity implements UserDetails {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(unique = true)
     private String username;
     @Column(name = "first_name")

@@ -6,12 +6,12 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @Setter
 public class Goods {
-    private UUID id;
+    private Integer id;
     private String goodsType;
     private int discount;
     private int price;

@@ -4,10 +4,10 @@
 <body>
 <div th:replace="~{fragments/template :: header}"></div>
 <div class="container center-align">
-    <h5 class="mb-3">Ваш баланс — <bold th:text="${#authentication.getPrincipal().getCash()}"></bold></h5>
+    <h5 sec:authorize="!hasAuthority('ADMIN')" class="mb-3">Ваш баланс — <bold th:text="${#authentication.getPrincipal().getCash()}"></bold></h5>
     <a th:href="@{/order}" >Посмотреть заказы</a>
     <a th:href="@{/goods}" >Посмотреть список блюд</a>
-    <form method="post" id="filter-order-form" class="row mb-1 inline-form" th:action="@{/order/add}" th:object="${filterDto}">
+    <form sec:authorize="!hasAuthority('ADMIN')" method="post" id="filter-order-form" class="row mb-1 inline-form" th:action="@{/order/add}" th:object="${filterDto}">
         <div class="input-field col s12">
             <input id="nameFilter" name="name" th:field="*{name}" type="text" class="validate">
             <label for="nameFilter">Поиск</label>
@@ -24,8 +24,8 @@
             <button class="waves-effect waves-light btn-small" type="submit"><i class="material-icons">search</i></button>
         </div>
     </form>
-    <h3 class="col s12 center-x" style="width: 100%" th:if="${goods.size() == 0}">Товары не найдены</h3>
-    <div class="row wrap" style="display: flex; align-items: stretch">
+    <h3 sec:authorize="!hasAuthority('ADMIN')" class="col s12 center-x" style="width: 100%" th:if="${goods.size() == 0}">Товары не найдены</h3>
+    <div sec:authorize="!hasAuthority('ADMIN')" class="row wrap" style="display: flex; align-items: stretch">
         <div class="col m6 s12">
             <div class="row wrap" style="display: flex; align-items: stretch">
                 <div class="col s12" style="margin-left: 0 !important;" th:each="item : ${goods}">
@@ -59,9 +59,10 @@
                     </label>
                 </div>
                 <ul class="collection" id="collection-added-goods">
-                    <li th:each="item,iter : ${checkedGoods}" class="collection-item" th:data-index="${iter.index}" th:data-price="${item.getCurrentPrice()}" th:data-id="${item.getId()}" style="display: flex; flex-direction: column">
+                    <li th:each="item,iter : ${T(com.example.rest.Helpers.Utilities).getGoodsWithCount(checkedGoods)}" class="collection-item" th:data-index="${iter.index}" th:data-price="${item.getCurrentPrice()}" th:data-count="${item.getCount()}" th:data-id="${item.getId()}" style="display: flex; flex-direction: column">
                         <div th:text="${item.getName()}"></div>
                         <div th:text="'Цена - ' + ${item.getCurrentPrice()}"></div>
+                        <div th:text="'Кол-во - ' + ${item.getCount()}"></div>
                         <button class="m-x-auto w100 remove-goods waves-effect waves-light mini-btn btn-small">Удалить</button>
                     </li>
                 </ul>
@@ -72,6 +73,7 @@
             </form>
         </div>
     </div>
+
 </div>
 <script th:replace="~{fragments/template :: script}"></script>
 </body>

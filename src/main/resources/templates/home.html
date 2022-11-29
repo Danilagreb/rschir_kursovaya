@@ -18,6 +18,11 @@
                 <a style="width: 100%" class="waves-effect waves-light btn modal-trigger" href="#modal-balance">Баланса</a>
             </div>
         </div>
+        <div class="mb-2 mt-1">
+            <div class="col s12 p0 mb-1">
+                <a class="waves-effect waves-light btn modal-trigger" href="#modal-delete">Удалить аккаунт</a>
+            </div>
+        </div>
         <div class="profile-row" style="display: flex; justify-content: space-around; width: 100%; align-items: baseline">
             <ul class="collection with-header home-info" style="width: 100% !important; border-radius: 0; background: lightsalmon; color: blue">
                 <li class="collection-header home-info-item-header"><h6 class="home-info-value">Основная информация</h6></li>
@@ -127,7 +132,16 @@
                 </div>
             </form>
         </div>
-
+        <div id="modal-delete" class="modal">
+            <form class="col s12" method="post" th:action="@{/profile/delete}">
+                <div class="modal-content">
+                    <h2>Вы уверены?</h2>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat">Да</button>
+                </div>
+            </form>
+        </div>
     </div>
     <div sec:authorize="isAnonymous()">
         <a th:href="@{/login}">Войдите в аккаунт</a>
